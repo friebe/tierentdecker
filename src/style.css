@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #FFC107;
+  --background-color: #F5F5F5;
+}
+
+body {
+  @apply bg-gray-100 font-sans;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  @apply px-6 py-3 rounded-full text-xl font-bold shadow-lg transform transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-lg p-6 m-4 transform transition-transform duration-200 hover:scale-105;
+}
+
+.animal-sound-btn {
+  @apply bg-secondary-color text-white rounded-full p-4 shadow-lg transform transition-transform duration-200 hover:scale-110;
+}
