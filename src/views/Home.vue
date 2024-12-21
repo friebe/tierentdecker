@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -17,20 +16,17 @@ const router = useRouter();
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div @click="router.push('/tiere')" 
-           class="card cursor-pointer bg-white hover:bg-gray-50">
+      <div @click="router.push('/tiere')" class="card cursor-pointer bg-white hover:bg-gray-50">
         <h2 class="text-2xl font-bold mb-2">🐘 Tierkarten</h2>
         <p>Lerne verschiedene Tiere und ihre Geräusche kennen!</p>
       </div>
 
-      <div @click="router.push('/spiel')" 
-           class="card cursor-pointer bg-white hover:bg-gray-50">
+      <div @click="router.push('/spiel')" class="card cursor-pointer bg-white hover:bg-gray-50">
         <h2 class="text-2xl font-bold mb-2">🎮 Tierspiel</h2>
         <p>Spiele lustige Spiele mit den Tieren!</p>
       </div>
 
-      <div @click="router.push('/quiz')" 
-           class="card cursor-pointer bg-white hover:bg-gray-50">
+      <div @click="router.push('/quiz')" class="card cursor-pointer bg-white hover:bg-gray-50">
         <h2 class="text-2xl font-bold mb-2">❓ Tierquiz</h2>
         <p>Teste dein Wissen über die Tierwelt!</p>
       </div>
