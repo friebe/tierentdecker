@@ -4,12 +4,10 @@ import confetti from 'canvas-confetti';
 import QuizCard from '../components/quiz/QuizCard.vue';
 import { animals } from '../data/animals';
 import { shuffleArray, getRandomItem } from '../utils/quiz';
-import { onMounted } from 'vue';
 
 const quizAnimals = ref(shuffleArray(animals).slice(0, 4));
 const targetAnimal = ref(getRandomItem(quizAnimals.value));
 const incorrectAttempts = ref<number[]>([]);
-const feedback = ref<string>('');
 
 const speakQuestion = (artikel: string, name: string) => {
   const speech = new SpeechSynthesisUtterance(`Wo ist ${artikel} ${name}?`);
@@ -17,13 +15,7 @@ const speakQuestion = (artikel: string, name: string) => {
   window.speechSynthesis.speak(speech);
 }
 
-// onMounted(() => {
-//   targetAnimal.value = getRandomItem(quizAnimals.value);
-//   document.addEventListener('click', enableSpeech, { once: true });
-// });
-
 const enableSpeech = () => {
-  //document.removeEventListener('click', enableSpeech);
   speakQuestion(targetAnimal.value.artikel, targetAnimal.value.name);
 };
 
