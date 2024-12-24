@@ -15,10 +15,6 @@ const speakQuestion = (artikel: string, name: string) => {
   window.speechSynthesis.speak(speech);
 }
 
-const enableSpeech = () => {
-  speakQuestion(targetAnimal.value.artikel, targetAnimal.value.name);
-};
-
 const checkAnswer = (animalId: number) => {
   if (animalId === targetAnimal.value.id) {
     confetti({
