@@ -13,10 +13,10 @@ export default defineConfig({
       injectRegister: 'auto',
 
       manifest: {
-        display: 'standalone',
-        name: 'vite-project',
-        short_name: 'vite-project',
-        description: 'vite-project',
+        display: 'fullscreen',
+        name: 'tierentdecker',
+        short_name: 'tierentdecker',
+        description: 'tierentdecker',
         theme_color: '#ffffff',
       },
     })
