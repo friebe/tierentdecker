@@ -11,12 +11,14 @@ export default defineConfig({
       injectRegister: 'auto',
 
       manifest: {
-        start_url: '/',
-        display: 'standalone',
-        name: 'tierentdecker',
-        short_name: 'tierentdecker',
-        description: 'tierentdecker',
-        theme_color: '#ffffff',
+        theme_color: "#f69435",
+        background_color: "#f69435",
+        display: "standalone",
+        scope: "/",
+        start_url: "/",
+        short_name: "Vite PWA",
+        description: "Vite PWA Demo",
+        name: "Vite PWA",
       },
     })
   ],
