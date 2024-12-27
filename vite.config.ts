@@ -13,6 +13,7 @@ export default defineConfig({
       injectRegister: 'auto',
 
       manifest: {
+        start_url: '/',
         display: 'fullscreen',
         name: 'tierentdecker',
         short_name: 'tierentdecker',
