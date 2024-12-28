@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import confetti from 'canvas-confetti';
 import QuizCard from '../components/quiz/QuizCard.vue';
 import { animals } from '../data/animals';
@@ -11,33 +11,37 @@ const incorrectAttempts = ref<number[]>([]);
 const showCorrectAnswer = ref(false);
 const correctAnimal = ref<typeof animals[0] | null>(null);
 
-onMounted(() => {
-  newQuiz();
-});
+// Wrong answer sound
+const wrongSound = new Audio('/sounds/wrong.mp3');
 
-const speakQuestion = (artikel: string, name: string) => {
-  const speech = new SpeechSynthesisUtterance(`Wo ist ${artikel} ${name}?`);
-  speech.lang = 'de-DE';
-  window.speechSynthesis.speak(speech);
-}
+const checkAnswer = async (animalId: number) => {
+  if (incorrectAttempts.value.includes(animalId)) return; // Prevent clicking on wrong answers
 
-const checkAnswer = (animalId: number) => {
   if (animalId === targetAnimal.value.id) {
     correctAnimal.value = targetAnimal.value;
     showCorrectAnswer.value = true;
 
+    // Trigger confetti
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 }
     });
 
-    const speech = new SpeechSynthesisUtterance(`Richtig!!`);
+    // Speak the animal name with article
+    const speech = new SpeechSynthesisUtterance(`der ${targetAnimal.value.name}`);
     speech.lang = 'de-DE';
     window.speechSynthesis.speak(speech);
 
-    setTimeout(newQuiz, 1500);
+    // Reset after animation
+    setTimeout(newQuiz, 2500);
   } else {
+    // Play wrong sound
+    try {
+      await wrongSound.play();
+    } catch (error) {
+      console.error('Could not play wrong sound:', error);
+    }
     incorrectAttempts.value.push(animalId);
   }
 };
@@ -49,24 +53,31 @@ const newQuiz = () => {
   targetAnimal.value = getRandomItem(quizAnimals.value);
   incorrectAttempts.value = [];
 
-  speakQuestion(targetAnimal.value.artikel, targetAnimal.value.name)
+  // Ask the question
+  const question = new SpeechSynthesisUtterance(`Wo ist ${targetAnimal.value.artikel} ${targetAnimal.value.name}?`);
+  question.lang = 'de-DE';
+  window.speechSynthesis.speak(question);
 };
 
 const isCorrect = (animalId: number) => {
-  if (incorrectAttempts.value.includes(animalId)) {
-    const speech = new SpeechSynthesisUtterance(`Leider falsch`);
-    speech.lang = 'de-DE';
-    window.speechSynthesis.speak(speech);
-
-    return false;
-  }
-
+  if (incorrectAttempts.value.includes(animalId)) return false;
   return null;
 };
+
+onMounted(() => {
+  newQuiz();
+});
 </script>
 
 <template>
   <div class="fixed inset-0 bg-background-color">
+    <!-- Question Display -->
+    <div class="absolute top-4 left-0 right-0 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-primary-color">
+        Wo ist {{ targetAnimal.artikel }} {{ targetAnimal.name }}?
+      </h2>
+    </div>
+
     <!-- Correct Answer Overlay -->
     <div v-if="showCorrectAnswer && correctAnimal"
       class="fixed inset-0 flex flex-col items-center justify-center bg-background-color/90 z-50">
@@ -81,7 +92,7 @@ const isCorrect = (animalId: number) => {
     </div>
 
     <!-- Quiz Grid -->
-    <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-2 p-2">
+    <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-2 p-2 pt-16">
       <QuizCard v-for="animal in quizAnimals" :key="animal.id" :animal="animal" :is-correct="isCorrect(animal.id)"
         @select="checkAnswer(animal.id)" />
     </div>
