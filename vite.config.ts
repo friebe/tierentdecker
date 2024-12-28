@@ -38,7 +38,7 @@ export default defineConfig({
 
         theme_color: "#f69435",
         background_color: "#f69435",
-        display: "standalone",
+        display: "fullscreen",
         scope: "/",
         start_url: "/",
         short_name: "Vite PWA",
