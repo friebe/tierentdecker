@@ -40,7 +40,7 @@ export default defineConfig({
         background_color: "#f69435",
         display: "fullscreen",
         scope: "/",
-        start_url: "/",
+        start_url: "/?fullscreen=true",
         short_name: "Vite PWA",
         description: "Vite PWA Demo",
         name: "Vite PWA",
