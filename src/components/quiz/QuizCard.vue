@@ -14,7 +14,7 @@ defineEmits<{
 
 <template>
   <button @click="$emit('select')" class="quiz-card relative" :class="{
-    'border-red-500 bg-red-100': isCorrect === false
+    'border-red-500 pointer-events-none bg-red-100': isCorrect === false
   }">
     <div class="text-[15vh]">{{ animal.icon }}</div>
 
