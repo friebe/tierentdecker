@@ -28,13 +28,12 @@ const checkAnswer = async (animalId: number) => {
       origin: { y: 0.6 }
     });
 
-    // Speak the animal name with article
-    const speech = new SpeechSynthesisUtterance(`der ${targetAnimal.value.name}`);
+    const speech = new SpeechSynthesisUtterance(`${targetAnimal.value.artikel} ${targetAnimal.value.name}`);
     speech.lang = 'de-DE';
     window.speechSynthesis.speak(speech);
 
     // Reset after animation
-    setTimeout(newQuiz, 2500);
+    setTimeout(newQuiz, 3000);
   } else {
     // Play wrong sound
     try {
@@ -73,21 +72,23 @@ onMounted(() => {
   <div class="fixed inset-0 bg-background-color">
     <!-- Question Display -->
     <div class="absolute top-4 left-0 right-0 text-center">
-      <h2 class="text-2xl md:text-3xl font-bold text-primary-color">
-        Wo ist {{ targetAnimal.artikel }} {{ targetAnimal.name }}?
-      </h2>
+      <a href="/">
+        <h2 class="text-xl md:text-2xl font-bold text-primary-color">
+          Wo ist {{ targetAnimal.artikel }} {{ targetAnimal.name }}?
+        </h2>
+      </a>
     </div>
 
     <!-- Correct Answer Overlay -->
     <div v-if="showCorrectAnswer && correctAnimal"
       class="fixed inset-0 flex flex-col items-center justify-center bg-background-color/90 z-50">
       <div class="transform scale-150 mb-8">
-        <div class="text-[200px] animate-bounce">
+        <div class="text-[100px] animate-bounce">
           {{ correctAnimal.icon }}
         </div>
       </div>
       <h2 class="text-4xl font-bold text-primary-color">
-        der {{ correctAnimal.name }}
+        {{ correctAnimal.artikel }} {{ correctAnimal.name }}
       </h2>
     </div>
 
