@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import confetti from 'canvas-confetti';
 import QuizCard from '../components/quiz/QuizCard.vue';
 import { animals } from '../data/animals';
