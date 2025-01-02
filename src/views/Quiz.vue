@@ -2,20 +2,27 @@
 import { ref, onMounted } from 'vue';
 import confetti from 'canvas-confetti';
 import QuizCard from '../components/quiz/QuizCard.vue';
-import { animals } from '../data/animals';
+import { Animal, animals } from '../data/animals';
 import { shuffleArray, getRandomItem } from '../utils/quiz';
 
 const quizAnimals = ref(shuffleArray(animals).slice(0, 4));
 const targetAnimal = ref(getRandomItem(quizAnimals.value));
 const incorrectAttempts = ref<number[]>([]);
 const showCorrectAnswer = ref(false);
-const correctAnimal = ref<typeof animals[0] | null>(null);
+const correctAnimal = ref<Animal | null>(null);
 
 // Wrong answer sound
 const wrongSound = new Audio('/sounds/wrong.mp3');
+let currentAudio: HTMLAudioElement | null = null;
 
-const checkAnswer = async (animalId: number) => {
+const checkAnswer = async (animalId: number, animalSound: string) => {
   if (incorrectAttempts.value.includes(animalId)) return; // Prevent clicking on wrong answers
+
+  // Stop any currently playing audio
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0; // Zurück zum Anfang
+  }
 
   if (animalId === targetAnimal.value.id) {
     correctAnimal.value = targetAnimal.value;
@@ -32,8 +39,24 @@ const checkAnswer = async (animalId: number) => {
     speech.lang = 'de-DE';
     window.speechSynthesis.speak(speech);
 
+    // Play correct sound
+    currentAudio = new Audio(animalSound);
+
+    try {
+      await currentAudio.play();
+    } catch (error) {
+      console.error('Could not play audio:', error);
+    }
+
     // Reset after animation
-    setTimeout(newQuiz, 3000);
+    setTimeout(() => {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null; // Reset current audio
+      }
+      newQuiz();
+    }, 3000);
+
   } else {
     // Play wrong sound
     try {
@@ -71,13 +94,13 @@ onMounted(() => {
 <template>
   <div class="fixed inset-0 bg-background-color">
     <!-- Question Display -->
-    <div class="absolute top-4 left-0 right-0 text-center">
+    <!-- <div class="absolute top-4 left-0 right-0 text-center">
       <a href="/">
         <h2 class="text-xl md:text-2xl font-bold text-primary-color">
           Wo ist {{ targetAnimal.artikel }} {{ targetAnimal.name }}?
         </h2>
       </a>
-    </div>
+    </div> -->
 
     <!-- Correct Answer Overlay -->
     <div v-if="showCorrectAnswer && correctAnimal"
@@ -93,9 +116,9 @@ onMounted(() => {
     </div>
 
     <!-- Quiz Grid -->
-    <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-2 p-2 pt-16">
+    <div class="w-full h-full grid grid-cols-2 grid-rows-2 gap-2 p-2">
       <QuizCard v-for="animal in quizAnimals" :key="animal.id" :animal="animal" :is-correct="isCorrect(animal.id)"
-        @select="checkAnswer(animal.id)" />
+        @select="checkAnswer(animal.id, animal.sound)" />
     </div>
   </div>
 </template>

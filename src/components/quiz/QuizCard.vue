@@ -27,6 +27,6 @@ defineEmits<{
 
 <style scoped>
 .quiz-card {
-  @apply w-full h-full flex items-center justify-center rounded-xl border-4 border-gray-200 bg-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl;
+  @apply w-full h-full flex items-center justify-center rounded-xl border-4 border-gray-200 bg-white shadow-lg;
 }
 </style>
